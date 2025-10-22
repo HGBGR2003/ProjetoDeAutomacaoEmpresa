@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuth } from "../AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function FormularioAcesso(params) {
   const [email, setEmail] = useState("");
@@ -6,8 +8,13 @@ export default function FormularioAcesso(params) {
   const [error, setError] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setCarregando(true);
     try {
       const resposta = await fetch("", {
         method: "POST",
@@ -26,7 +33,8 @@ export default function FormularioAcesso(params) {
 
       const dados = await resposta.json();
       console.log(dados);
-      localStorage.setItem("token", dados.token);
+      login(dados.token);
+      navigate("/controle");
     } catch (error) {
       setError(error.message);
     } finally {
