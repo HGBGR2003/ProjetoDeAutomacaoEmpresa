@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuth } from "../AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function FormularioAcesso(params) {
   const [email, setEmail] = useState("");
@@ -6,8 +8,13 @@ export default function FormularioAcesso(params) {
   const [error, setError] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setCarregando(true);
     try {
       const resposta = await fetch("", {
         method: "POST",
@@ -26,7 +33,8 @@ export default function FormularioAcesso(params) {
 
       const dados = await resposta.json();
       console.log(dados);
-      localStorage.setItem("token", dados.token);
+      login(dados.token);
+      navigate("/controle");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -37,26 +45,36 @@ export default function FormularioAcesso(params) {
   return (
     <>
       <h1>Formulario de Acesso Para Empresas</h1>
-      <form onSubmit={handleSubmit} style={{
-        justifyItems:"center",
-        alignContent:"center",
-        width:"100%",
-      }}>
-        <div style={{
-            display:"grid"
-        }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          justifyItems: "center",
+          alignContent: "center",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+          }}
+        >
           <section
             style={{
               display: "inline-flex",
               marginBottom: "3rem",
             }}
           >
-            <input type="text" placeholder="Usuário" style={{
-                width:"300px",
-                height:"70px",
+            <input
+              type="text"
+              placeholder="Usuário"
+              onChange={(e) => setEmail(e.targer.value)}
+              style={{
+                width: "300px",
+                height: "70px",
                 fontSize: "2rem",
-                borderRadius:"100px"
-            }} />
+                borderRadius: "100px",
+              }}
+            />
           </section>
 
           <section
@@ -64,16 +82,20 @@ export default function FormularioAcesso(params) {
               display: "inline-flex",
             }}
           >
-            <input type="password" placeholder="Senha" style={{
-                width:"300px",
-                height:"70px",
+            <input
+              type="password"
+              placeholder="Senha"
+              onChange={(e) => setSenha(e.targer.value)}
+              style={{
+                width: "300px",
+                height: "70px",
                 fontSize: "2rem",
-                borderRadius:"100px"
-            }} />
+                borderRadius: "100px",
+              }}
+            />
           </section>
 
-         <button type="submit">Enviar</button>
-
+          <button type="submit">Enviar</button>
         </div>
       </form>
     </>
