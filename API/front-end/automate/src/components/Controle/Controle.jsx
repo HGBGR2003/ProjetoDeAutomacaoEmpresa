@@ -42,7 +42,7 @@ export default function Controle() {
               opacity: hover ? 0 : 1,
               transform: hover ? "translateX(-20px)" : "none",
               position: "absolute",
-              left: "32px",
+              left: "55px",
               top: 0,
               height: "100%",
               display: "flex",
@@ -58,7 +58,7 @@ export default function Controle() {
               fontSize: "28px",
               position: "relative",
               marginLeft: hover ? "0px" : "72px",
-              left: hover ? "0px" : "32px",
+              left: hover ? "0px" : "300px",
             }}
           >
             &rarr;
