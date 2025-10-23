@@ -9,6 +9,7 @@ export default function PaginaNaoEncontrada() {
           paddingBottom: "50px",
           display: "flex",
           justifySelf: "center",
+          color: "#ffffff"
         }}
       >
         Página Não Encontrada
@@ -30,6 +31,7 @@ export default function PaginaNaoEncontrada() {
               minWidth: "300px",
               maxWidth: "500px",
               height: "50px",
+              fontWeight: "700"
             }}
           >
             Voltar para a Página Inicial

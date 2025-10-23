@@ -76,6 +76,7 @@ export default function FormularioAcesso(params) {
           >
             <section style={{ marginBottom: "1rem", width: "100%" }}>
               <input
+                onChange={(e) => setEmail(e.target.value)}
                 type="text"
                 placeholder="&#x1F464; Usuário"
                 style={{
@@ -90,6 +91,7 @@ export default function FormularioAcesso(params) {
 
             <section style={{ marginBottom: "1rem", width: "100%" }}>
               <input
+                onChange={(e) => setSenha(e.target.value)}
                 type="password"
                 placeholder="&#x1F512; Senha"
                 style={{
