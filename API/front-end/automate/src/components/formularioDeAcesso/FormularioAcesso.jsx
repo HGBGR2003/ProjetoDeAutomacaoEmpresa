@@ -74,7 +74,14 @@ export default function FormularioAcesso(params) {
               boxShadow: "0 4px 8px #00000033",
             }}
           >
-            <section style={{ marginBottom: "1rem", width: "100%" }}>
+            <section
+              style={{
+                marginBottom: "1rem",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 type="text"
@@ -83,13 +90,21 @@ export default function FormularioAcesso(params) {
                   fontSize: "1.5rem",
                   borderRadius: "100px",
                   padding: "0.75rem",
-                  width: "100%",
+                  width: "80%",
+                  maxWidth: "300px",
                   border: "1px solid #ccc",
                 }}
               />
             </section>
 
-            <section style={{ marginBottom: "1rem", width: "100%" }}>
+            <section
+              style={{
+                marginBottom: "1rem",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <input
                 onChange={(e) => setSenha(e.target.value)}
                 type="password"
@@ -98,7 +113,8 @@ export default function FormularioAcesso(params) {
                   fontSize: "1.5rem",
                   borderRadius: "100px",
                   padding: "0.75rem",
-                  width: "100%",
+                  width: "80%",
+                  maxWidth: "300px",
                   border: "1px solid #ccc",
                 }}
               />
@@ -112,7 +128,8 @@ export default function FormularioAcesso(params) {
                 backgroundColor: "#000000",
                 color: "#ebebeb",
                 fontSize: "1rem",
-                width: "100%",
+                width: "80%",
+                maxWidth: "300px",
                 cursor: "pointer",
               }}
             >
