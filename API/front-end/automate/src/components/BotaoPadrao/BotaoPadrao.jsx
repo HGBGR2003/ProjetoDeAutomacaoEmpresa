@@ -42,7 +42,7 @@ const [hover, setHover] = useState(false);
               opacity: hover ? 0 : 1,
               transform: hover ? "translateX(-20px)" : "none",
               position: "absolute",
-              left: "55px",
+              left: setaDireita ? "55px" : "47px",
               top: 0,
               height: "100%",
               display: "flex",
