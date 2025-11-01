@@ -16,8 +16,8 @@ export default function FormularioAcesso(params) {
     setError("");
     setCarregando(true);
     try {
-      const resposta = await fetch("", {
-        method: "POST",
+      const resposta = await fetch("http://localhost:8080/pessoas", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
@@ -33,7 +33,7 @@ export default function FormularioAcesso(params) {
 
       const dados = await resposta.json();
       console.log(dados);
-      login(dados.token);
+      // login(dados.token);
       navigate("/controle");
     } catch (error) {
       setError(error.message);
