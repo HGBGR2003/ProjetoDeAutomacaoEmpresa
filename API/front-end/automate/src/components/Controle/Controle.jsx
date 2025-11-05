@@ -2,12 +2,16 @@ import BotaoPadrao from "../BotaoPadrao/BotaoPadrao";
 export default function Controle() {
   const enviarComando = async (comando) => {
     try {
-      const resposta = await fetch("/api/comando", {
-        method: "POST",
+      const resposta = await fetch("http://localhost:8080/portas", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ acao: comando }),
+        body: JSON.stringify({
+          id:1,
+          descricao: "porta 02",
+          status: "ABERTO",
+        }),
       });
 
       if (!resposta.ok) {
@@ -71,13 +75,13 @@ export default function Controle() {
             texto="ABRIR"
             cor="#d32f2f"
             direcao="→"
-            aoClicar={() => enviarComando("abrir")}
+            aoClicar={() => enviarComando("ABERTO")}
           />
           <BotaoPadrao
             texto="FECHAR"
             cor="#0edcf3"
             direcao="←"
-            aoClicar={() => enviarComando("fechar")}
+            aoClicar={() => enviarComando("FECHADO")}
           />
         </div>
       </div>
