@@ -1,7 +1,6 @@
 import { useState } from "react";
 export default function Botao({ texto, cor, direcao, aoClicar }) {
   const [hover, setHover] = useState(false);
-
   return (
     <>
       <style>{`
@@ -84,4 +83,3 @@ export default function Botao({ texto, cor, direcao, aoClicar }) {
     </>
   );
 }
-
