@@ -6,4 +6,5 @@ Primeiramente no Front-End Main:
 
 Depois o Controle:
 
-<img width="1865" height="918" alt="Tela do Botão" src="https://github.com/user-attachments/assets/453bac3a-f5f4-4a63-aa61-eb7fca720dcb" />
+<img width="1856" height="1079" alt="Captura de tela 2025-11-05 123139" src="https://github.com/user-attachments/assets/a501a68a-dff1-482c-ab98-9fb00ac0319c" />
+
