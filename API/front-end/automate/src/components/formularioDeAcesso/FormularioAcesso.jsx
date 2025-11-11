@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function FormularioAcesso(params) {
+export default function FormularioAcesso() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
@@ -16,8 +16,8 @@ export default function FormularioAcesso(params) {
     setError("");
     setCarregando(true);
     try {
-      const resposta = await fetch("http://localhost:8080/pessoas", {
-        method: "GET",
+      const resposta = await fetch("http://localhost:8080/login", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -33,7 +33,6 @@ export default function FormularioAcesso(params) {
 
       const dados = await resposta.json();
       console.log(dados);
-      // login(dados.token);
       navigate("/controle");
     } catch (error) {
       setError(error.message);
@@ -51,7 +50,7 @@ export default function FormularioAcesso(params) {
             flexDirection: "column",
             alignItems: "center",
             minHeight: "100vh",
-            backgroundColor: "#007BFF", // azul de fundo
+            backgroundColor: "#007BFF",
             padding: "2rem",
             boxSizing: "border-box",
           }}
@@ -121,20 +120,47 @@ export default function FormularioAcesso(params) {
             </section>
 
             <button
-              type="submit"
-              style={{
-                borderRadius: "2rem",
-                padding: "1rem",
-                backgroundColor: "#000000",
-                color: "#ebebeb",
-                fontSize: "1rem",
-                width: "80%",
-                maxWidth: "300px",
-                cursor: "pointer",
-              }}
-            >
-              Enviar
-            </button>
+          type="submit"
+          style={{
+            borderRadius: "2rem",
+            padding: "1rem",
+            backgroundColor: "#000000",
+            color: "#ebebeb",
+            fontSize: "1rem",
+            width: "80%",
+            maxWidth: "300px",
+            cursor: carregando ? "not-allowed" : "pointer",
+            opacity: carregando ? 0.8 : 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+          disabled={carregando}
+        >
+          {carregando ? (
+            <>
+              Enviando
+              <div
+                style={{
+                  border: "3px solid #fff",
+                  borderTop: "3px solid transparent",
+                  borderRadius: "50%",
+                  width: "18px",
+                  height: "18px",
+                  animation: "spin 1s linear infinite",
+                }}
+              />
+            </>
+          ) : (
+            "Enviar"
+          )}
+        </button>
+            {error && (
+              <p style={{ color: "red", marginTop: "1rem", fontSize: "1rem" }}>
+                {error}
+              </p>
+            )}
           </form>
         </div>
       </>
