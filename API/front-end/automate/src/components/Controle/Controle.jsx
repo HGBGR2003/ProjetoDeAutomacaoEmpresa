@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useAuth } from "../AuthContext/AuthContext";
 import BotaoPadrao from "../BotaoPadrao/BotaoPadrao";
+import PopUpRequisicao from "../PopUpRequisicao/PopUpRequisicao";
 export default function Controle() {
   const {token} = useAuth();
+  const [error, setError] = useState(null);
   const enviarComando = async () => {
     try {
       const resposta = await fetch("http://localhost:8080/portas", {
@@ -17,7 +20,8 @@ export default function Controle() {
         }),
       });
 
-      if (!resposta.ok) {
+      if (resposta.ok) {
+        setError("Não foi possível movimentar o portão.")
         throw new Error("Erro ao enviar comando");
       }
 
@@ -87,6 +91,7 @@ export default function Controle() {
             aoClicar={() => enviarComando("FECHADO")}
           />
         </div>
+          <PopUpRequisicao tipo={'error'} mensagem={error} />
       </div>
     </>
   );
