@@ -33,10 +33,10 @@ public class PortasController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Portas> atualizar(@PathVariable Long id, @RequestBody Portas portaAtualizada) {
+    @PutMapping()
+    public ResponseEntity<Portas> atualizar(@RequestBody Portas portaAtualizada) {
         try {
-            Portas atualizada = service.atualizar(id, portaAtualizada);
+            Portas atualizada = service.atualizar(portaAtualizada);
             return ResponseEntity.ok(atualizada);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

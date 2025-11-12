@@ -25,8 +25,8 @@ public class PortasService {
         return repository.findById(id);
     }
 
-    public Portas atualizar(Long id, Portas novaPorta) {
-        return repository.findById(id)
+    public Portas atualizar(Portas novaPorta) {
+        return repository.findById(novaPorta.getId())
                 .map(porta -> {
                     porta.setDescricao(novaPorta.getDescricao());
                     porta.setStatus(novaPorta.getStatus());
