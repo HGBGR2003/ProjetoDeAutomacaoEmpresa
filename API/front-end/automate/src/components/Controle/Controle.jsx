@@ -1,11 +1,14 @@
+import { useAuth } from "../AuthContext/AuthContext";
 import BotaoPadrao from "../BotaoPadrao/BotaoPadrao";
 export default function Controle() {
-  const enviarComando = async (comando) => {
+  const {token} = useAuth();
+  const enviarComando = async () => {
     try {
       const resposta = await fetch("http://localhost:8080/portas", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id:1,

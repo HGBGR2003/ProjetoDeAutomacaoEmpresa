@@ -13,9 +13,9 @@ function App() {
         <Route
           path="/controle"
           element={
-            // <ProtectedRouter>
+            <ProtectedRouter>
               <Controle />
-            // </ProtectedRouter>
+            </ProtectedRouter>
           }
         />
         <Route path="*" element={<PaginaNaoEncontrada />} />

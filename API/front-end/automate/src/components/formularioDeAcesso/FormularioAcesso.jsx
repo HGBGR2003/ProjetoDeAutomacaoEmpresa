@@ -32,7 +32,8 @@ export default function FormularioAcesso() {
       }
 
       const dados = await resposta.json();
-      console.log(dados);
+      login(dados.token);
+      console.log(dados.token);
       navigate("/controle");
     } catch (error) {
       setError(error.message);
