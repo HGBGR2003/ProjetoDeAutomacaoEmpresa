@@ -3,32 +3,35 @@ import { useAuth } from "../AuthContext/AuthContext";
 import BotaoPadrao from "../BotaoPadrao/BotaoPadrao";
 import PopUpRequisicao from "../PopUpRequisicao/PopUpRequisicao";
 export default function Controle() {
-  const {token} = useAuth();
-  const [error, setError] = useState(null);
-  const enviarComando = async () => {
+  const { token } = useAuth();
+  const [error, setError] = useState({
+    massage: null,
+    key: 0,
+  });
+  const enviarComando = async (statusPorta) => {
     try {
       const resposta = await fetch("http://localhost:8080/portas", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          id:1,
+          id: 1,
           descricao: "porta 02",
-          status: "ABERTO",
+          status: statusPorta,
         }),
       });
 
-      if (resposta.ok) {
-        setError("Não foi possível movimentar o portão.")
+      if (!resposta.ok) {
         throw new Error("Erro ao enviar comando");
       }
-
-      const resultado = await resposta.json();
-      console.log("Resposta do servidor:", resultado);
+      // const resultado = await resposta.json();
     } catch (error) {
-      console.error("Erro:", error.message);
+      setError({
+        message: error.message,
+        key: Date.now(),
+      });
     }
   };
 
@@ -91,7 +94,13 @@ export default function Controle() {
             aoClicar={() => enviarComando("FECHADO")}
           />
         </div>
-          <PopUpRequisicao tipo={'error'} mensagem={error} />
+        {error?.message && (
+          <PopUpRequisicao
+            key={error.key}
+            tipo="error"
+            mensagem={error?.message}
+          />
+        )}
       </div>
     </>
   );
