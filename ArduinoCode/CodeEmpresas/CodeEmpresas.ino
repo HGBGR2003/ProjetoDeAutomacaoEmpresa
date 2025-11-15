@@ -1,69 +1,136 @@
 #include <SoftwareSerial.h>
 #include <Stepper.h>
 
-#define RX 2
-#define TX 3
+#define RX 4
+#define TX 5
 SoftwareSerial esp(RX, TX);
 
-const int stepsPerRevolution = 2048; 
+#define SENSOR_FIM_ABERTO 2
+#define SENSOR_FIM_FECHADO 3
+
+const int stepsPerRevolution = 2048;
 Stepper motor(stepsPerRevolution, 8, 10, 9, 11);
 
-String apiURL = "http://seu-endereco-da-api.com/status"; 
 String ssid = "SEU_WIFI";
 String password = "SUA_SENHA_WIFI";
+String host = "seu-endereco-da-api.com";
+
+enum EstadoPortao {
+  ABERTO,
+  FECHADO,
+  MOVENDO,
+  DESCONHECIDO
+};
+
+EstadoPortao estadoAtual = DESCONHECIDO;
 
 void setup() {
   Serial.begin(9600);
   esp.begin(9600);
-  motor.setSpeed(10); 
+  motor.setSpeed(10);
+
+  pinMode(SENSOR_FIM_ABERTO, INPUT_PULLUP);
+  pinMode(SENSOR_FIM_FECHADO, INPUT_PULLUP);
+
+  Serial.println("--- Iniciando Sistema ---");
+  Serial.println("Calibrando: Fechando portão até o limite...");
   
+  while (digitalRead(SENSOR_FIM_FECHADO) == HIGH) {
+    motor.step(-5); 
+    delay(10);      
+  }
+
+  estadoAtual = FECHADO;
+  Serial.println("Calibrado! Posição atual: FECHADO.");
+
   Serial.println("Iniciando conexão WiFi...");
   conectarWiFi();
 }
 
 void loop() {
-  String statusPortao = fazerRequisicao();
+  if (estadoAtual != MOVENDO) {
+    
+    String comandoAPI = fazerRequisicao();
 
-  if (statusPortao == "ABERTO") {
-    Serial.println("Abrindo portão...");
-    motor.step(stepsPerRevolution);  
-  } 
-  else if (statusPortao == "FECHADO") {
-    Serial.println("Fechando portão...");
-    motor.step(-stepsPerRevolution); 
+    if (comandoAPI == "ABERTO" && estadoAtual == FECHADO) {
+      Serial.println("Comando: ABRIR.");
+      abrirPortao();
+    } else if (comandoAPI == "FECHADO" && estadoAtual == ABERTO) {
+      Serial.println("Comando: FECHAR.");
+      fecharPortao();
+    } else if (comandoAPI != "") {
+    }
   }
 
-  delay(500); // intervalo de 0,5 segundos
+  delay(1000);
+}
+
+void abrirPortao() {
+  estadoAtual = MOVENDO;
+
+  while (digitalRead(SENSOR_FIM_ABERTO) == HIGH) {
+    motor.step(10);
+  }
+  
+  motor.step(0);
+  estadoAtual = ABERTO;
+  Serial.println("Status: Portão Totalmente ABERTO.");
+}
+
+void fecharPortao() {
+  estadoAtual = MOVENDO;
+  
+  while (digitalRead(SENSOR_FIM_FECHADO) == HIGH) {
+    motor.step(-10);
+  }
+  
+  motor.step(0);
+  estadoAtual = FECHADO;
+  Serial.println("Status: Portão Totalmente FECHADO.");
 }
 
 void conectarWiFi() {
   enviarComando("AT+RST", 2000);
   enviarComando("AT+CWMODE=1", 1000);
-  enviarComando("AT+CWJAP=\"" + ssid + "\",\"" + password + "\"", 6000);
+  String cmdConexao = "AT+CWJAP=\"" + ssid + "\",\"" + password + "\"";
+  enviarComando(cmdConexao, 8000);
 }
 
 String fazerRequisicao() {
-  enviarComando("AT+CIPSTART=\"TCP\",\"seu-endereco-da-api.com\",80", 2000);
-  String requisicao = "GET /status HTTP/1.1\r\nHost: seu-endereco-da-api.com\r\nConnection: close\r\n\r\n";
+  String cmdStart = "AT+CIPSTART=\"TCP\",\"" + host + "\",80";
+  enviarComando(cmdStart, 2000);
+
+  String requisicao = "GET /status HTTP/1.1\r\n";
+  requisicao += "Host: " + host + "\r\n";
+  requisicao += "Connection: close\r\n\r\n";
   
-  String cmd = "AT+CIPSEND=" + String(requisicao.length());
-  enviarComando(cmd, 2000);
+  String cmdSend = "AT+CIPSEND=" + String(requisicao.length());
+  enviarComando(cmdSend, 1000);
+  
   esp.print(requisicao);
   
   String resposta = lerResposta(4000);
-  enviarComando("AT+CIPCLOSE", 1000);
   
+  enviarComando("AT+CIPCLOSE", 1000);
+
   if (resposta.indexOf("ABERTO") > 0) return "ABERTO";
   if (resposta.indexOf("FECHADO") > 0) return "FECHADO";
+  
   return "";
 }
 
 void enviarComando(String comando, int tempo) {
+  while (esp.available()) esp.read();
+  
   esp.println(comando);
   delay(tempo);
+  
+  // Imprimir resposta no Serial Monitor para debug
+  /*
   while (esp.available()) {
     Serial.write(esp.read());
   }
+  */
 }
 
 String lerResposta(int tempo) {
@@ -75,6 +142,7 @@ String lerResposta(int tempo) {
       conteudo += c;
     }
   }
-  Serial.println("Resposta: " + conteudo);
+  // Debug da resposta completa se precisar:
+  // Serial.println(conteudo);
   return conteudo;
 }
