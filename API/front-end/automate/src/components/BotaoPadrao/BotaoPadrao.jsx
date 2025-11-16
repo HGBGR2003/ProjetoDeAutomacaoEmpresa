@@ -17,7 +17,6 @@ export default function Botao({ texto, cor, direcao, aoClicar }) {
           font-size: 20px;
           font-weight: 600;
           cursor: pointer;
-          padding: 16px 40px;
           transition: all 0.3s ease;
           overflow: hidden;
           min-width: 160px;
