@@ -44,6 +44,24 @@ export default function FormularioAcesso() {
 
   return (
     <>
+    <style>{`
+  .container {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px #00000033;
+  }
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+  }
+`}</style>
       <>
         <div
           style={{
@@ -62,17 +80,7 @@ export default function FormularioAcesso() {
 
           <form
             onSubmit={handleSubmit}
-            style={{
-              display: "grid",
-              justifyItems: "center",
-              alignContent: "center",
-              width: "100%",
-              maxWidth: "400px",
-              backgroundColor: "#ffffff",
-              padding: "2rem",
-              borderRadius: "1rem",
-              boxShadow: "0 4px 8px #00000033",
-            }}
+            className="container"
           >
             <section
               style={{
