@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../AuthContext/AuthContext";
 import BotaoPadrao from "../BotaoPadrao/BotaoPadrao";
 import PopUpRequisicao from "../PopUpRequisicao/PopUpRequisicao";
+import { useNavigate } from "react-router-dom";
 export default function Controle() {
   const { token } = useAuth();
   const [statusPortao, setStatusPortao] = useState("FECHADO");
+  const navigate = useNavigate();
   const [error, setError] = useState({
     message: '',
     key: 0,
@@ -50,7 +52,7 @@ useEffect(() => {
           },
         });
         if (!resposta.ok) {
-          throw new Error("Erro ao buscar status do portão");
+          throw new Error("Erro ao buscar status do portão. \n Faça login novamente.");
         }
         const dados = await resposta.json();
         setStatusPortao(dados.status);
@@ -59,6 +61,7 @@ useEffect(() => {
           message: error.message,
           key: Date.now(),
         });
+        navigate("/");
       }
     };
 
@@ -71,7 +74,7 @@ useEffect(() => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <>

@@ -26,7 +26,7 @@ public class TokenService {
             Key secretKey = Keys.hmacShaKeyFor(secret.getBytes());
 
             Instant agora = LocalDateTime.now().toInstant(ZoneOffset.of("-03:00"));
-            Instant dataExpiracao = agora.plusSeconds(7200);
+            Instant dataExpiracao = agora.plusSeconds(300);
 
             return Jwts.builder()
                     .setIssuer("API Acesso")
