@@ -10,7 +10,7 @@ export default function Controle() {
   });
   const enviarComando = async (statusPorta) => {
     try {
-      const resposta = await fetch("http://localhost:8080/portas", {
+      const resposta = await fetch("/portas", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

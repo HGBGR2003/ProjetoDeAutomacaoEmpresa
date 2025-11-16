@@ -16,7 +16,7 @@ export default function FormularioAcesso() {
     setError("");
     setCarregando(true);
     try {
-      const resposta = await fetch("http://localhost:8080/login", {
+      const resposta = await fetch("/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
