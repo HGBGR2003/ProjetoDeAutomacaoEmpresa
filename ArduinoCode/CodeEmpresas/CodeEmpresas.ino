@@ -13,7 +13,7 @@ Stepper motor(stepsPerRevolution, 8, 10, 9, 11);
 
 String ssid = "SEU_WIFI";
 String password = "SUA_SENHA_WIFI";
-String host = "seu-endereco-da-api.com";
+String host = "http://10.56.49.8:8080/portas/status/1";
 
 enum EstadoPortao {
   ABERTO,
@@ -125,12 +125,7 @@ void enviarComando(String comando, int tempo) {
   esp.println(comando);
   delay(tempo);
   
-  // Imprimir resposta no Serial Monitor para debug
-  /*
-  while (esp.available()) {
-    Serial.write(esp.read());
-  }
-  */
+ 
 }
 
 String lerResposta(int tempo) {
@@ -142,7 +137,6 @@ String lerResposta(int tempo) {
       conteudo += c;
     }
   }
-  // Debug da resposta completa se precisar:
-  // Serial.println(conteudo);
+
   return conteudo;
 }

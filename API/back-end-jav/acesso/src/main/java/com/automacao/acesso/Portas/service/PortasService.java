@@ -1,4 +1,5 @@
 package com.automacao.acesso.Portas.service;
+
 import com.automacao.acesso.Portas.model.Portas;
 import com.automacao.acesso.Portas.repository.PortasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,18 @@ public class PortasService {
     public void deletar(Long id) {
         repository.deleteById(id);
     }
+
+    public String arduinoCheck(Long id) {
+        Optional<Portas> porta = repository.findById(id);
+
+        if (porta.isPresent()) {
+            Portas portaEncontrada = porta.get();
+            String teste = String.valueOf(portaEncontrada.getStatus());
+            return teste;
+
+        }
+
+        return null;
+    }
+
 }

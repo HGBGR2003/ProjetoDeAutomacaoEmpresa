@@ -33,6 +33,18 @@ public class PortasController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/status/{id}")
+    public ResponseEntity<String> arduinoCheck(@PathVariable Long id) {
+
+        String status = service.arduinoCheck(id);
+
+        if (status == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(status);
+    }
+
     @PutMapping()
     public ResponseEntity<Portas> atualizar(@RequestBody Portas portaAtualizada) {
         try {
