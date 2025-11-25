@@ -1,5 +1,6 @@
 package com.automacao.acesso.Portas.controller;
 
+import com.automacao.acesso.Portas.dto.StatusPortaDTO;
 import com.automacao.acesso.Portas.model.Portas;
 import com.automacao.acesso.Portas.service.PortasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class PortasController {
     }
 
     @GetMapping("/status/{id}")
-    public ResponseEntity<String> arduinoCheck(@PathVariable Long id) {
+    public ResponseEntity<StatusPortaDTO> arduinoCheck(@PathVariable Long id) {
 
         String status = service.arduinoCheck(id);
 
@@ -42,7 +43,7 @@ public class PortasController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(status);
+        return ResponseEntity.ok(new StatusPortaDTO(status));
     }
 
     @PutMapping()
