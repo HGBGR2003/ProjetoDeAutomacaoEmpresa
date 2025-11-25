@@ -1,5 +1,6 @@
 package com.automacao.acesso.Portas.controller;
 
+
 import com.automacao.acesso.Portas.dto.StatusPortaDTO;
 import com.automacao.acesso.Portas.model.Portas;
 import com.automacao.acesso.Portas.service.PortasService;
