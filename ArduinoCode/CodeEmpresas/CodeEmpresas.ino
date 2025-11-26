@@ -47,20 +47,20 @@ void loop() {
       enviarStatus();
     }
     // Executa comandos de movimento
-    else if (comando == "ABRIR" && estadoAtual == FECHADO) {
-      Serial.println("Comando recebido: ABRIR");
+    else if (comando == "ABERTO" && estadoAtual == FECHADO) {
+      Serial.println("Comando recebido: ABERTO");
       abrirPortao();
       enviarStatus(); // Envia status atualizado após a ação
     } 
-    else if (comando == "FECHAR" && estadoAtual == ABERTO) {
-      Serial.println("Comando recebido: FECHAR");
+    else if (comando == "FECHADO" && estadoAtual == ABERTO) {
+      Serial.println("Comando recebido: FECHADO");
       fecharPortao();
       enviarStatus(); // Envia status atualizado após a ação
     }
-    else if (comando == "ABRIR" && estadoAtual == ABERTO) {
+    else if (comando == "ABERTO" && estadoAtual == ABERTO) {
       Serial.println("ERRO: Portão já está ABERTO");
     }
-    else if (comando == "FECHAR" && estadoAtual == FECHADO) {
+    else if (comando == "FECHADO" && estadoAtual == FECHADO) {
       Serial.println("ERRO: Portão já está FECHADO");
     }
     else if (estadoAtual == MOVENDO) {
