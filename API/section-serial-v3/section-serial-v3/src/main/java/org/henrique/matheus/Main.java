@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    private static final String API_URL = "http://localhost:8080/portas/1";
+    private static final String API_URL = "http://localhost:8080/portas/status/1";
     private static String COM_PORT = "COM3";
     private static final int POLLING_INTERVAL_MS = 2000;
 
@@ -56,7 +56,6 @@ public class Main {
     public static void sincronizarComAPI() {
         try {
             String statusAPI = consultarStatusAPI();
-
             if (!statusAPI.equals(ultimoStatusAPI)) {
                 System.out.println("\n🌐 API mudou de '" + ultimoStatusAPI + "' para '" + statusAPI + "'");
                 ultimoStatusAPI = statusAPI;
@@ -89,8 +88,10 @@ public class Main {
         HttpResponse<String> res =
                 httpClient.send(req, HttpResponse.BodyHandlers.ofString());
 
+
         if (res.statusCode() != 200)
             throw new Exception("API retornou HTTP " + res.statusCode());
+
 
         JsonObject json = JsonParser.parseString(res.body()).getAsJsonObject();
         String status = json.get("status").getAsString().toUpperCase();
